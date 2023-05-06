@@ -13,7 +13,7 @@ Create and activate a virtual environment:
 ```bash
 pip install virtualenv
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate "or in vs use:" ./.venv/Scripts/Activate.ps1
 ```
 
 Install requirements:
