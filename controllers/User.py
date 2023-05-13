@@ -41,7 +41,6 @@ class User_belongs_to_Community(db.model):
 
     def list_belong():
         belong_list = User_belongs_to_Community.query.all()
-
         response = make_response(jsonify(belong_list),200)
         response.headers["Content-Type"] = "application/json"
 
