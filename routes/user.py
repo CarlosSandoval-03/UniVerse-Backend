@@ -9,5 +9,3 @@ meetings = Blueprint("belong", __name__)
 def new_meet():
     User_belongs_to_Community.create_belong()
     return redirect("/")
-
-
