@@ -39,10 +39,10 @@ class Meeting(db.model):
         description = request.form['description']
         place = request.form['place']
         date = request.form['date']
-        name_community = request.form['name_community']
-        name_user = request.form['name_user']
+        id_community = request.form['id_community']
+        id_user = request.form['id_user']
         
-        new_meet = Meeting(name, description, place, date, name_community, name_user)
+        new_meet = Meeting(name, description, place, date, id_community, id_user)
 
         db.session.add(new_meet)
         db.session.commit()
