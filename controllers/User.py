@@ -3,76 +3,51 @@ from config.server_conf import db
 from flask_sqlalchemy import SQLAlchemy as sq
 from datetime import datetime
 
-#Tablas provisionals miestras se tiene las tablas originales en otros controladores
 class Community(db.model):
     id_community = db.Column(db.Integer, nullable = False, primary_key = True)
-    name =db.Column(db.String(60), nullable = False)
+    name = db.Column(db.String(60), nullable = False)
+    description = db.Column(db.String(120))
+    created_at = db.Column(db.datetime)
+    updated_at = db.Column(db.datetime)
 
 class User(db.model):
     id_user = db.Column(db.Integer, nullable = False, primary_key = True)
-    name =db.Column(db.String(60), nullable = False)
-
-#Controlador Meeting
-class Meeting(db.model):
-    id_meeting = db.Column(db.Integer, nullable = False, primary_key = True)
     name = db.Column(db.String(60), nullable = False)
-    description = db.Column(db.String(120))
-    place = db.Column(db.String(100), nullable = False)
-    date = db.Column(db.datetime, nullable = False)
+    email = db.Coumn(db.String(100), nullable = False)
+    password = db.Coumn(db.String(100), nullable = False)
     created_at = db.Column(db.datetime)
     updated_at = db.Column(db.datetime)
-    id_community = db.Column(db.Integer, sq.ForeignKey(Community.id_community), nullable = False)
+
+#Controlador Usuario a comunidad
+class User_belongs_to_Community(db.model):
     id_user = db.Column(db.Integer, sq.ForeignKey(User.id_user), nullable = False)
+    id_community = db.Column(db.Integer, sq.ForeignKey(Community.id_community), nullable = False)
+    date = db.Column(db.datetime, nullable = False)
     
-    def __init__(self,name,description,place,date,id_community,id_user):
-        self.name = name
-        self.description = description
-        self.place = place
-        self.date = date
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+    def __init__(self,id_community,id_user,date):
         self.id_community = id_community
         self.id_user = id_user
+        self.date = date
 
-    def create_meet():
-        name = request.form['name']
-        description = request.form['description']
-        place = request.form['place']
-        date = request.form['date']
+    def create_belong():
         id_community = request.form['id_community']
         id_user = request.form['id_user']
+        date = request.form['date']
         
-        new_meet = Meeting(name, description, place, date, id_community, id_user)
+        new_belong = User_belongs_to_Community(id_community, id_user, date)
 
-        db.session.add(new_meet)
+        db.session.add(new_belong)
         db.session.commit()
 
-    def list_meetings():
-        meetings_list = Meeting.query.all()
+    def list_belong():
+        belong_list = User_belongs_to_Community.query.all()
 
-        response = make_response(jsonify(meetings_list),200)
+        response = make_response(jsonify(belong_list),200)
         response.headers["Content-Type"] = "application/json"
 
         return response
-
-    def edit_meet(id_meeting, meet):
-        if request.method == "POST":
-            meet.name = request.form['name']
-            meet.description = request.form['description']
-            meet.place = request.form['place']
-            meet.date = request.form['date']
-            meet.updated_at = datetime.now()
-            meet.id_community = request.form['id_community']
-            meet.id_user = request.form['id_user']
-
-            db.session.commit()
-        else:
-            response = make_response(jsonify(meet),200)
-            response.headers["Content-Type"] = "application/json"
-
-            return response 
         
-    def delete_meet(id_meeting,meet):
+    def delete_belong(id_user,id_community):
         
-        db.session.delete(meet)
+        db.session.delete(id_user,id_community)
         db.session.commit()
