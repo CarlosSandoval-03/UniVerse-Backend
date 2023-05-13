@@ -50,3 +50,4 @@ class User_belongs_to_Community(db.model):
         
         db.session.delete(id_user,id_community)
         db.session.commit()
+        
