@@ -2,9 +2,9 @@ import re
 import datetime
 from config.server_conf import db
 from werkzeug.security import check_password_hash
-import os 
-import base64
-import onetimepass
+from os import urandom 
+from base64 import b32encode
+from onetimepass import valid_totp
 
 
 class UserModel(db.Model):
@@ -32,7 +32,7 @@ class UserModel(db.Model):
         self.email = email
         self.name = name
         self.password = password
-        self.otp_secret = base64.b32encode(os.urandom(10)).decode("utf-8")
+        self.otp_secret = b32encode(urandom(10)).decode("utf-8")
 
     def json(self):
         return {
@@ -45,7 +45,7 @@ class UserModel(db.Model):
         return f"otpauth://totp/{self.email}?secret={self.otp_secret}&issuer=Flask"
     
     def verify_totp(self, token):
-        return onetimepass.valid_totp(token, self.otp_secret)
+        return valid_totp(token, self.otp_secret)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)

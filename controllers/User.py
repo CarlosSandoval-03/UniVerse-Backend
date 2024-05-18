@@ -229,7 +229,6 @@ class UserLogout(Resource):
             return {"message": "An error occurred logging out"}, 500
 
 
-
 class User2FA(Resource):
     @jwt_required(verify_type=False)
     def get(self):
