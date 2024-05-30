@@ -16,6 +16,7 @@ MYSQL_PASSWORD = environ.get("MYSQL_PASSWORD")
 MYSQL_HOST = environ.get("MYSQL_HOST")
 MYSQL_PORT = environ.get("MYSQL_PORT")
 MYSQL_DB = environ.get("MYSQL_DB_NAME")
+# MYSQL_SECRET_KEY = environ.get("MYSQL_SECRET_KEY")
 DATABASE_CONNECTION_URI = f"mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB}"
 
 # For production environment only
